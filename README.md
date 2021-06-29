@@ -211,14 +211,16 @@ See instructions on how to deploy a static website on cloud storage.
    * Create a bucket
    * Select a location where you store the data.
    * Select a default storage class for your data.
-   * Select access control for your bucket. Fine-grained making all files in your bucket publicly accessible is easier and faster.
+   * Select access control for your bucket. `Fine-grained` making all files in your bucket publicly accessible is easier and faster.
    * Select create to create the bucket.
 2. Make it Public
    * Click the vertical ellipsis on the right side and click `Edit bucket permissions`.
    * Add a member called `allUsers` with the role Storage Object Viewer.
    * Click `Allow Public Access` to make it public.
 3. Build the Next.js project
-* Build your app with this command `npm run build`
-* After that all the built assets can be found in the out folder.
+    * Build your app with this command `npm run build`
+    * After that all the built assets can be found in the out folder.
 
-`code() ok`
+```javascript
+ok
+         ```
