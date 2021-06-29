@@ -244,5 +244,5 @@ https://cs-front-end.storage.googleapis.com/index.html
 
 Persistent Disk: 
 ```
-https://persistent-disk-fe.storage.googleapis.com/
+https://persistent-disk-fe.storage.googleapis.com/index.html
 ```
