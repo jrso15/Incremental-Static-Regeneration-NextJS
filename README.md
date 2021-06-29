@@ -203,15 +203,22 @@ https://wp-stateless.github.io/docs/manual-setup
 Additional guide:
 https://geekflare.com/wordpress-media-google-cloud-storage
 
-#### Deploy Next.js Static Website with GCP Cloud Storage
+#### Deploy Next.js Static Website with GCP Cloud Storage ###
 
 See instructions on how to deploy a static website on cloud storage.
 
 1. Create a Bucket With Public Access
    * Create a bucket
-   2. Select a location where you store the data.
-   3. Select a default storage class for your data.
-   4. Select access control for our bucket. Fine-grained making all files in your bucket publicly accessible is easier and faster.
-   5. Select create to create the bucket.
+   * Select a location where you store the data.
+   * Select a default storage class for your data.
+   * Select access control for your bucket. Fine-grained making all files in your bucket publicly accessible is easier and faster.
+   * Select create to create the bucket.
 2. Make it Public
-   1. test
+   * Click the vertical ellipsis on the right side and click `Edit bucket permissions`.
+   * Add a member called `allUsers` with the role Storage Object Viewer.
+   * Click `Allow Public Access` to make it public.
+3. Build the Next.js project
+* Build your app with this command `npm run build`
+* After that all the built assets can be found in the out folder.
+
+`code() ok`
