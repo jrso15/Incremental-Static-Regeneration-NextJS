@@ -203,7 +203,7 @@ https://wp-stateless.github.io/docs/manual-setup
 Additional guide:
 https://geekflare.com/wordpress-media-google-cloud-storage
 
-#### Deploy Next.js Static Website with GCP Cloud Storage ###
+## Deploy Next.js Static Website with GCP Cloud Storage
 
 See instructions on how to deploy a static website on cloud storage.
 
@@ -220,7 +220,7 @@ See instructions on how to deploy a static website on cloud storage.
 3. Build the Next.js project
     * Build your app with this command `npm run build`
     * After that all the built assets can be found in the out folder.
-
+    * Run the following command.
 ```javascript
   "scripts": {
     "dev": "next dev",
@@ -228,3 +228,8 @@ See instructions on how to deploy a static website on cloud storage.
     "start": "next start"
   },
 ```
+4. Select all files inside out folder where you can find build files.
+5. Upload and Test.
+   * Click the file index.html.
+   * Copy the link in `Public URL`.
+   * If the site is not working, put the buket name in the url like this. `http://<BUCKET_NAME>.storage.googleapis.com/index.html`.
