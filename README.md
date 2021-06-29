@@ -213,3 +213,5 @@ See instructions on how to deploy a static website on cloud storage.
    3. Select a default storage class for your data.
    4. Select access control for our bucket. Fine-grained making all files in your bucket publicly accessible is easier and faster.
    5. Select create to create the bucket.
+2. Make it Public
+   1. test
