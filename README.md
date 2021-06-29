@@ -237,6 +237,12 @@ See instructions on how to deploy a static website on cloud storage.
 
 Websites:
 
-Cloud Storage: ```https://cs-front-end.storage.googleapis.com/index.html```
+Cloud Storage: 
+```
+https://cs-front-end.storage.googleapis.com/index.html
+```
 
-Persistent Disk: ```https://persistent-disk-fe.storage.googleapis.com/```
+Persistent Disk: 
+```
+https://persistent-disk-fe.storage.googleapis.com/
+```
