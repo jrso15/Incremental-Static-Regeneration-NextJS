@@ -208,7 +208,7 @@ https://geekflare.com/wordpress-media-google-cloud-storage
 See instructions on how to deploy a static website on cloud storage.
 
 1. Create a Bucket With Public Access
-   1. Create a bucket
+   * Create a bucket
    2. Select a location where you store the data.
    3. Select a default storage class for your data.
    4. Select access control for our bucket. Fine-grained making all files in your bucket publicly accessible is easier and faster.
