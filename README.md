@@ -203,6 +203,7 @@ https://wp-stateless.github.io/docs/manual-setup
 Additional guide:
 https://geekflare.com/wordpress-media-google-cloud-storage
 
+
 ## Deploy Next.js Static Website with GCP Cloud Storage
 
 See instructions on how to deploy a static website on cloud storage.
