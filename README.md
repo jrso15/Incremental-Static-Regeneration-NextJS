@@ -236,5 +236,7 @@ See instructions on how to deploy a static website on cloud storage.
    * If the site is not working, put the buket name in the url like this. `https://<BUCKET_NAME>.storage.googleapis.com/index.html`.
 
 Websites:
+
 Cloud Storage: ```https://cs-front-end.storage.googleapis.com/index.html```
+
 Persistent Disk: ```https://persistent-disk-fe.storage.googleapis.com/```
