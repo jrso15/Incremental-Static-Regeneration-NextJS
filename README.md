@@ -222,5 +222,9 @@ See instructions on how to deploy a static website on cloud storage.
     * After that all the built assets can be found in the out folder.
 
 ```javascript
-ok
-         ```
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && next export",
+    "start": "next start"
+  },
+```
