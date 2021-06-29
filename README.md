@@ -232,4 +232,4 @@ See instructions on how to deploy a static website on cloud storage.
 5. Upload and Test.
    * Click the file index.html.
    * Copy the link in `Public URL`.
-   * If the site is not working, put the buket name in the url like this. `http://<BUCKET_NAME>.storage.googleapis.com/index.html`.
+   * If the site is not working, put the buket name in the url like this. `https://<BUCKET_NAME>.storage.googleapis.com/index.html`.
