@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
-import Header from "../components/header";
-import Footer from "../components/footer";
+import HeaderContainer from "../components/Header";
+import FooterContainer from "../components/Footer";
 import ReactHtmlParser from "react-html-parser";
 import {
   Container,
@@ -53,7 +53,7 @@ const Home = ({ posts }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
+      <HeaderContainer />
 
       <Main>
         {posts.map((post) => (
@@ -76,7 +76,7 @@ const Home = ({ posts }) => {
         ))}
       </Main>
 
-      <Footer />
+      <FooterContainer />
     </Container>
   );
 };

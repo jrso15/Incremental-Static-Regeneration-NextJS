@@ -1,5 +1,5 @@
-import Header from "../../components/header";
-import Footer from "../../components/footer";
+import HeaderContainer from "../../components/Header";
+import FooterContainer from "../../components/Footer";
 import ReactHtmlParser from "react-html-parser";
 import {
   Container,
@@ -66,7 +66,7 @@ const InnerArticle = ({ post }) => {
   console.log(post);
   return (
     <Container>
-      <Header />
+      <HeaderContainer />
 
       <MainInner>
         <ArticleTitle>{post.title}</ArticleTitle>
@@ -82,7 +82,7 @@ const InnerArticle = ({ post }) => {
         {ReactHtmlParser(post.content)}
       </MainInner>
 
-      <Footer />
+      <FooterContainer />
     </Container>
   );
 };
