@@ -1,7 +1,12 @@
 import { FooterContainer } from "../styles/styles";
 
 const Footer = () => {
-  return <FooterContainer></FooterContainer>;
+  return (
+    <FooterContainer>
+      <div> Persistent Disk </div>
+      <div> © Copyright 2021 </div>
+    </FooterContainer>
+  );
 };
 
 export default Footer;

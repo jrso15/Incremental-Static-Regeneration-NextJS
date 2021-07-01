@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -16,7 +17,8 @@ export const Main = styled.main`
   justify-content: space-between;
   @media (min-width: 768px) {
     flex-direction: row;
-    padding: 5rem 3rem;
+    flex-wrap: wrap;
+    padding: 5rem 1rem;
   }
   @media (min-width: 1200px) {
     flex-direction: row;
@@ -24,12 +26,38 @@ export const Main = styled.main`
   }
 `;
 
+export const MainInner = styled.main`
+  width: 70%;
+  padding: 5rem 0rem;
+  margin: 0 auto;
+  @media (min-width: 768px) {
+    height: auto;
+    min-height: 780px;
+    padding: 5rem 3rem;
+  }
+  @media (min-width: 1200px) {
+    height: auto;
+    min-height: 600px;
+  }
+`;
+
 export const Title = styled.h1`
   font-size: 1.5em;
-  text-align: left;
+  text-align: center;
+  text-transform: uppercase;
   color: #604020;
   font-weight: 900;
   margin-right: 30px;
+`;
+
+export const ArticleTitle = styled.h1`
+  font-size: 3em;
+  margin-bottom: 30px;
+  color: #604020;
+`;
+
+export const ListTitle = styled.h2`
+  color: #604020;
 `;
 
 export const HeaderContainer = styled.header`
@@ -40,8 +68,6 @@ export const Nav = styled.nav`
   width: 100%;
   padding: 1rem 2rem;
   background-color: #ebabab;
-  display: flex;
-  align-items: center;
   @media (min-width: 768px) {
     padding: 1rem 3rem;
   }
@@ -62,20 +88,57 @@ export const Links = styled.a`
 
 export const Article = styled.div`
   width: 100%;
-  height: 500px;
-  border: 1px solid red;
-  margin-bottom: 30px;
+  height: auto;
+  border: 1px solid #9c6e6e;
+  margin-bottom: 50px;
+  padding: 20px;
+  cursor: pointer;
   @media (min-width: 768px) {
     width: 32%;
   }
 `;
 
+export const ThumbnailContainer = styled.div`
+  width: 100%;
+  position: relative;
+  height: 250px;
+  max-height: 250px;
+  margin: 20px 0;
+`;
+
+export const ImageContainer = styled.div`
+  width: 100%;
+  position: relative;
+  margin: 40px 0;
+  height: 200px;
+  @media (min-width: 768px) {
+    height: 300px;
+    max-height: 550px;
+  }
+  @media (min-width: 1200px) {
+    height: 550px;
+    max-height: 550px;
+  }
+`;
+
+export const ImageThumbnail = styled(Image)`
+  width: 100%;
+`;
+
+export const DateStyle = styled.p`
+  margin-top: 30px;
+  font-size: 15px;
+`;
+
 export const FooterContainer = styled.footer`
   width: 100%;
-  padding: 4rem 5rem;
+  padding: 2rem 2rem;
   border-top: 1px solid #eaeaea;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
   background-color: #9c6e6e;
+  font-size: 1.3em;
+  @media (min-width: 768px) {
+    padding: 2rem 10rem;
+  }
 `;

@@ -1,12 +1,15 @@
 import { HeaderContainer, Nav, Links, Title } from "../styles/styles";
+import Link from "next/link";
 
 const Header = () => {
   return (
     <HeaderContainer>
       <Nav>
-        <Title>SITE NAME</Title>
-        <Links href="">Articles</Links>
-        <Links href="">Test</Links>
+        <Link href="/">
+          <a>
+            <Title>PERSISTENT DISK</Title>
+          </a>
+        </Link>
       </Nav>
     </HeaderContainer>
   );
