@@ -11,16 +11,10 @@ import {
   ThumbnailContainer,
   ImageThumbnail,
   DateStyle,
-  ButtonWrapper,
-  NextLink,
 } from "../styles/styles";
 
 export const getStaticProps = async () => {
-  const res = await fetch(`http://34.87.36.219/wp-json/wp/v2/posts`);
-  const totalNumberOfItems = res.headers.get("x-wp-total");
-
-  let nextPage = totalNumberOfItems && totalNumberOfItems > 10 ? 2 : 1;
-
+  const res = await fetch("http://34.87.55.152/wp-json/wp/v2/posts");
   let posts = await res.json();
   let image = "";
   let dateString = "";
@@ -38,7 +32,7 @@ export const getStaticProps = async () => {
         const imageApi = post["_links"]["wp:featuredmedia"][0].href;
         const res = await fetch(imageApi);
         const data = await res.json();
-
+        
         if (data.guid && data.guid.rendered) {
           image = data.guid.rendered;
         }
@@ -48,12 +42,12 @@ export const getStaticProps = async () => {
   );
 
   return {
-    props: { posts, nextPage },
+    props: { posts },
     revalidate: 10,
   };
 };
 
-const Home = ({ posts, nextPage }) => {
+const Home = ({ posts }) => {
   return (
     <Container>
       <Head>
@@ -83,15 +77,6 @@ const Home = ({ posts, nextPage }) => {
             </Article>
           </Link>
         ))}
-        <ButtonWrapper>
-          {/* {nextPage && nextPage !== 1 && (
-            <Link href={"/pages/" + nextPage}>PREV</Link>
-          )} */}
-
-          {nextPage && nextPage > 1 && (
-            <NextLink href={"/pages/" + nextPage}>NEXT</NextLink>
-          )}
-        </ButtonWrapper>
       </Main>
 
       <Footer />

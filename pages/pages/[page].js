@@ -1,7 +1,6 @@
-import Head from "next/head";
 import Link from "next/link";
-import Header from "../components/HeaderLayout";
-import Footer from "../components/FooterLayout";
+import Header from "../../components/HeaderLayout";
+import Footer from "../../components/FooterLayout";
 import ReactHtmlParser from "react-html-parser";
 import {
   Container,
@@ -12,18 +11,32 @@ import {
   ImageThumbnail,
   DateStyle,
   ButtonWrapper,
-  NextLink,
-} from "../styles/styles";
+} from "../../styles/styles";
 
-export const getStaticProps = async () => {
-  const res = await fetch(`http://34.87.36.219/wp-json/wp/v2/posts`);
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps = async (context) => {
+  const { page } = context.params;
+  const res = await fetch(
+    "http://34.87.36.219/wp-json/wp/v2/posts?page=" + page
+  );
   const totalNumberOfItems = res.headers.get("x-wp-total");
+  const totalNumberOfPages = Math.ceil(totalNumberOfItems / 10).toString();
 
-  let nextPage = totalNumberOfItems && totalNumberOfItems > 10 ? 2 : 1;
+  let nextPage =
+    page !== totalNumberOfPages ? (parseInt(page) + 1).toString() : -1;
+  let prevPage = page !== 1 ? page - 1 : -1;
 
   let posts = await res.json();
   let image = "";
   let dateString = "";
+
+  console.log(res);
 
   posts = await Promise.all(
     posts.map(async (post, i) => {
@@ -48,20 +61,15 @@ export const getStaticProps = async () => {
   );
 
   return {
-    props: { posts, nextPage },
+    props: { posts, nextPage, prevPage },
     revalidate: 10,
   };
 };
 
-const Home = ({ posts, nextPage }) => {
+const InnerPage = ({ posts, nextPage, prevPage }) => {
+  console.log("test", posts);
   return (
     <Container>
-      <Head>
-        <title>ARTICLES</title>
-        <meta name="description" content="articles" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <Header />
 
       <Main>
@@ -84,12 +92,14 @@ const Home = ({ posts, nextPage }) => {
           </Link>
         ))}
         <ButtonWrapper>
-          {/* {nextPage && nextPage !== 1 && (
-            <Link href={"/pages/" + nextPage}>PREV</Link>
-          )} */}
+          {prevPage && prevPage <= 1 && <Link href={"/"}>PREV</Link>}
+
+          {prevPage && prevPage > 1 && (
+            <Link href={"/pages/" + prevPage}>PREV</Link>
+          )}
 
           {nextPage && nextPage > 1 && (
-            <NextLink href={"/pages/" + nextPage}>NEXT</NextLink>
+            <Link href={"/pages/" + nextPage}>NEXT</Link>
           )}
         </ButtonWrapper>
       </Main>
@@ -99,4 +109,4 @@ const Home = ({ posts, nextPage }) => {
   );
 };
 
-export default Home;
+export default InnerPage;

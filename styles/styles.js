@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -128,6 +130,20 @@ export const ImageThumbnail = styled(Image)`
 export const DateStyle = styled.p`
   margin-top: 30px;
   font-size: 15px;
+`;
+
+export const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 25px;
+  font-weight: bold;
+  border-top: 1px solid #b3b3b3;
+  padding-top: 5px;
+`;
+
+export const NextLink = styled.a`
+  margin-left: auto;
 `;
 
 export const FooterContainer = styled.footer`

@@ -1,6 +1,6 @@
 import { FooterContainer } from "../styles/styles";
 
-const Footer = () => {
+const FooterLayout = () => {
   return (
     <FooterContainer>
       <div> Persistent Disk </div>
@@ -9,4 +9,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default FooterLayout;

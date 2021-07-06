@@ -1,5 +1,5 @@
-import HeaderContainer from "../../components/Header";
-import FooterContainer from "../../components/Footer";
+import Header from "../../components/HeaderLayout";
+import Footer from "../../components/FooterLayout";
 import ReactHtmlParser from "react-html-parser";
 import {
   Container,
@@ -10,7 +10,7 @@ import {
 } from "../../styles/styles";
 
 export const getStaticPaths = async () => {
-  const res = await fetch("http://34.126.160.141/wp-json/wp/v2/posts");
+  const res = await fetch("http://34.87.36.219/wp-json/wp/v2/posts");
   const data = await res.json();
 
   const paths = data.map((post) => {
@@ -22,14 +22,16 @@ export const getStaticPaths = async () => {
   });
   return {
     paths,
-    fallback: false,
+    fallback: "blocking",
   };
 };
 
 export const getStaticProps = async (context) => {
   const id = context.params.id;
-  const res = await fetch("http://34.126.160.141/wp-json/wp/v2/posts/" + id);
+  const res = await fetch("http://34.87.36.219/wp-json/wp/v2/posts/" + id);
   const data = await res.json();
+
+  console.log(data);
 
   let image = "";
   let dateString = "";
@@ -45,9 +47,9 @@ export const getStaticProps = async (context) => {
     const res = await fetch(imageApi);
     const imageData = await res.json();
 
-    console.log(imageData);
-
-    image = imageData.guid.rendered;
+    if (imageData.guid && imageData.guid.rendered) {
+      image = imageData.guid.rendered;
+    }
   }
 
   return {
@@ -66,7 +68,7 @@ const InnerArticle = ({ post }) => {
   console.log(post);
   return (
     <Container>
-      <HeaderContainer />
+      <Header />
 
       <MainInner>
         <ArticleTitle>{post.title}</ArticleTitle>
@@ -82,7 +84,7 @@ const InnerArticle = ({ post }) => {
         {ReactHtmlParser(post.content)}
       </MainInner>
 
-      <FooterContainer />
+      <Footer />
     </Container>
   );
 };

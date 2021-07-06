@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
-  },
+    "start": "next start",
+    "export": "npm run build && next export -o _static"
+},
   "dependencies": {
     "next": "11.0.1",
     "react": "17.0.2",

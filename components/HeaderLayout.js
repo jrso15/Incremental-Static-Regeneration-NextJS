@@ -1,7 +1,7 @@
 import { HeaderContainer, Nav, Links, Title } from "../styles/styles";
 import Link from "next/link";
 
-const Header = () => {
+const HeaderLayout = () => {
   return (
     <HeaderContainer>
       <Nav>
@@ -15,4 +15,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderLayout;
