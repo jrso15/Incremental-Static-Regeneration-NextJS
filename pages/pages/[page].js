@@ -71,7 +71,7 @@ export const getStaticProps = async (context) => {
 const InnerPage = ({ posts, nextPage, prevPage, page }) => {
   console.log("test", posts);
 
-  const [clientData, setClientData] = useState(null);
+  const [clientData, setClientData] = useState([]);
   const { isFallback } = useRouter();
   useEffect(() => {
     if (isFallback && !clientData) {
@@ -88,7 +88,6 @@ const InnerPage = ({ posts, nextPage, prevPage, page }) => {
     return (
       <Container>
         <Header />
-
         <Main>
           {clientData.map((post) => (
             <Link href={"/posts/" + post.id} key={post.id}>
