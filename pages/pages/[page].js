@@ -62,7 +62,7 @@ export const getStaticProps = async (context) => {
 
   return {
     props: { posts, nextPage, prevPage },
-    revalidate: 10,
+    revalidate: 60,
   };
 };
 
