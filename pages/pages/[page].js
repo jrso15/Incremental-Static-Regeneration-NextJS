@@ -70,12 +70,16 @@ export const getStaticProps = async (context) => {
       revalidate: 10,
     };
   } catch (err) {
-    console.log(err);
+    console.log("OK:", err);
+    return {
+      props: {},
+      revalidate: 1,
+    };
   }
 };
 
 const InnerPage = ({ posts, nextPage, prevPage, page }) => {
-  console.log("teeest" + posts);
+  console.log("teeest", posts);
 
   const [clientData, setClientData] = useState([]);
   const { isFallback } = useRouter();
