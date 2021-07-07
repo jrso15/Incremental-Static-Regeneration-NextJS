@@ -18,7 +18,7 @@ import {
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: true,
+    fallback: "blocking",
   };
 };
 
@@ -64,7 +64,7 @@ export const getStaticProps = async (context) => {
 
   return {
     props: { posts, nextPage, prevPage, page },
-    revalidate: 60,
+    revalidate: 10,
   };
 };
 
