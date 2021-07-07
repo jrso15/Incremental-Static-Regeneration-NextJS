@@ -75,7 +75,7 @@ export const getStaticProps = async (context) => {
 };
 
 const InnerPage = ({ posts, nextPage, prevPage, page }) => {
-  console.log("test", posts);
+  console.log("teeest", posts);
 
   const [clientData, setClientData] = useState([]);
   const { isFallback } = useRouter();
