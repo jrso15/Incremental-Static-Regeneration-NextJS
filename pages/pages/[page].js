@@ -34,7 +34,12 @@ export const getStaticProps = async (context) => {
     page !== totalNumberOfPages ? (parseInt(page) + 1).toString() : -1;
   let prevPage = page !== 1 ? page - 1 : -1;
 
-  let posts = await res.json();
+  let posts = [];
+  try {
+    posts = await res.json();
+  } catch (err) {
+    console.log("TEST");
+  }
   let image = "";
   let dateString = "";
 
