@@ -71,62 +71,59 @@ export const getStaticProps = async (context) => {
 const InnerPage = ({ posts, nextPage, prevPage, page }) => {
   console.log("test", posts);
 
-  const [clientData, setClientData] = useState(null);
+  const [data, setData] = useState(posts ?? []);
   const { isFallback } = useRouter();
+
   useEffect(() => {
-    if (isFallback && !clientData) {
+    if (isFallback && !data) {
       // Get Data from API
       fetch("http://34.87.36.219/wp-json/wp/v2/posts?page=" + page).then(
         async (resp) => {
-          setClientData(await resp.json());
+          setData(await resp.json());
         }
       );
     }
-  }, [clientData, isFallback]);
+  }, [data, isFallback]);
 
-  if (isFallback || !posts) {
-    return <Main posts={clientData} />;
-  } else {
-    return (
-      <Container>
-        <Header />
+  return (
+    <Container>
+      <Header />
 
-        <Main>
-          {posts.map((post) => (
-            <Link href={"/posts/" + post.id} key={post.id}>
-              <Article>
-                <ListTitle>{post.title.rendered}</ListTitle>
-                {post.image.length > 0 && (
-                  <ThumbnailContainer>
-                    <ImageThumbnail
-                      src={post.image}
-                      alt={post.title.rendered}
-                      layout="fill"
-                    />
-                  </ThumbnailContainer>
-                )}
-                {ReactHtmlParser(post.excerpt.rendered)}
-                <DateStyle>Published: {post.dateString}</DateStyle>
-              </Article>
-            </Link>
-          ))}
-          <ButtonWrapper>
-            {prevPage && prevPage <= 1 && <Link href={"/"}>PREV</Link>}
+      <Main>
+        {data.map((post) => (
+          <Link href={"/posts/" + post.id} key={post.id}>
+            <Article>
+              <ListTitle>{post.title.rendered}</ListTitle>
+              {post.image.length > 0 && (
+                <ThumbnailContainer>
+                  <ImageThumbnail
+                    src={post.image}
+                    alt={post.title.rendered}
+                    layout="fill"
+                  />
+                </ThumbnailContainer>
+              )}
+              {ReactHtmlParser(post.excerpt.rendered)}
+              <DateStyle>Published: {post.dateString}</DateStyle>
+            </Article>
+          </Link>
+        ))}
+        <ButtonWrapper>
+          {prevPage && prevPage <= 1 && <Link href={"/"}>PREV</Link>}
 
-            {prevPage && prevPage > 1 && (
-              <Link href={"/pages/" + prevPage}>PREV</Link>
-            )}
+          {prevPage && prevPage > 1 && (
+            <Link href={"/pages/" + prevPage}>PREV</Link>
+          )}
 
-            {nextPage && nextPage > 1 && (
-              <Link href={"/pages/" + nextPage}>NEXT</Link>
-            )}
-          </ButtonWrapper>
-        </Main>
+          {nextPage && nextPage > 1 && (
+            <Link href={"/pages/" + nextPage}>NEXT</Link>
+          )}
+        </ButtonWrapper>
+      </Main>
 
-        <Footer />
-      </Container>
-    );
-  }
+      <Footer />
+    </Container>
+  );
 };
 
 export default InnerPage;
