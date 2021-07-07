@@ -23,20 +23,21 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async (context) => {
-  const { page } = context.params;
-  const res = await fetch(
-    "http://34.87.36.219/wp-json/wp/v2/posts?page=" + page
-  );
-
-  const totalNumberOfItems = res.headers.get("x-wp-total");
-  const totalNumberOfPages = Math.ceil(totalNumberOfItems / 10).toString();
-
-  let nextPage =
-    page !== totalNumberOfPages ? (parseInt(page) + 1).toString() : -1;
-  let prevPage = page !== 1 ? page - 1 : -1;
-
   try {
-    let posts = await res.json();
+    const { page } = context.params;
+    const res = await fetch(
+      "http://34.87.36.219/wp-json/wp/v2/posts?page=" + page
+    );
+    const totalNumberOfItems = res.headers.get("x-wp-total");
+    const totalNumberOfPages = Math.ceil(totalNumberOfItems / 10).toString();
+
+    let nextPage =
+      page !== totalNumberOfPages ? (parseInt(page) + 1).toString() : -1;
+    let prevPage = page !== 1 ? page - 1 : -1;
+
+    let posts = [];
+    posts = await res.json();
+    console.log("TEST");
     let image = "";
     let dateString = "";
 
@@ -63,14 +64,14 @@ export const getStaticProps = async (context) => {
         return { ...post, image, dateString };
       })
     );
-  } catch (err) {
-    console.log(err);
-  }
 
-  return {
-    props: { posts, nextPage, prevPage, page },
-    revalidate: 10,
-  };
+    return {
+      props: { posts, nextPage, prevPage, page },
+      revalidate: 10,
+    };
+  } catch (err) {
+    console.log("error", err);
+  }
 };
 
 const InnerPage = ({ posts, nextPage, prevPage, page }) => {
