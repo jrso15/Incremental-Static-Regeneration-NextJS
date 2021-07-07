@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Header from "../../components/HeaderLayout";
 import Footer from "../../components/FooterLayout";
 import ReactHtmlParser from "react-html-parser";
@@ -16,7 +18,7 @@ import {
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: "blocking",
+    fallback: true,
   };
 };
 
@@ -61,52 +63,70 @@ export const getStaticProps = async (context) => {
   );
 
   return {
-    props: { posts, nextPage, prevPage },
+    props: { posts, nextPage, prevPage, page },
     revalidate: 60,
   };
 };
 
-const InnerPage = ({ posts, nextPage, prevPage }) => {
+const InnerPage = ({ posts, nextPage, prevPage, page }) => {
   console.log("test", posts);
-  return (
-    <Container>
-      <Header />
 
-      <Main>
-        {posts.map((post) => (
-          <Link href={"/posts/" + post.id} key={post.id}>
-            <Article>
-              <ListTitle>{post.title.rendered}</ListTitle>
-              {post.image.length > 0 && (
-                <ThumbnailContainer>
-                  <ImageThumbnail
-                    src={post.image}
-                    alt={post.title.rendered}
-                    layout="fill"
-                  />
-                </ThumbnailContainer>
-              )}
-              {ReactHtmlParser(post.excerpt.rendered)}
-              <DateStyle>Published: {post.dateString}</DateStyle>
-            </Article>
-          </Link>
-        ))}
-        <ButtonWrapper>
-          {prevPage && prevPage <= 1 && <Link href={"/"}>PREV</Link>}
+  const [clientData, setClientData] = useState(null);
+  const { isFallback } = useRouter();
+  useEffect(() => {
+    if (isFallback && !clientData) {
+      // Get Data from API
+      fetch("http://34.87.36.219/wp-json/wp/v2/posts?page=" + page).then(
+        async (resp) => {
+          setClientData(await resp.json());
+        }
+      );
+    }
+  }, [clientData, isFallback]);
 
-          {prevPage && prevPage > 1 && (
-            <Link href={"/pages/" + prevPage}>PREV</Link>
-          )}
+  if (isFallback || !posts) {
+    return <Main posts={clientData} />;
+  } else {
+    return (
+      <Container>
+        <Header />
 
-          {nextPage && nextPage > 1 && (
-            <Link href={"/pages/" + nextPage}>NEXT</Link>
-          )}
-        </ButtonWrapper>
-      </Main>
+        <Main>
+          {posts.map((post) => (
+            <Link href={"/posts/" + post.id} key={post.id}>
+              <Article>
+                <ListTitle>{post.title.rendered}</ListTitle>
+                {post.image.length > 0 && (
+                  <ThumbnailContainer>
+                    <ImageThumbnail
+                      src={post.image}
+                      alt={post.title.rendered}
+                      layout="fill"
+                    />
+                  </ThumbnailContainer>
+                )}
+                {ReactHtmlParser(post.excerpt.rendered)}
+                <DateStyle>Published: {post.dateString}</DateStyle>
+              </Article>
+            </Link>
+          ))}
+          <ButtonWrapper>
+            {prevPage && prevPage <= 1 && <Link href={"/"}>PREV</Link>}
 
-      <Footer />
-    </Container>
-  );
+            {prevPage && prevPage > 1 && (
+              <Link href={"/pages/" + prevPage}>PREV</Link>
+            )}
+
+            {nextPage && nextPage > 1 && (
+              <Link href={"/pages/" + nextPage}>NEXT</Link>
+            )}
+          </ButtonWrapper>
+        </Main>
+
+        <Footer />
+      </Container>
+    );
+  }
 };
 
 export default InnerPage;
