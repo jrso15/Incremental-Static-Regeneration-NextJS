@@ -90,7 +90,7 @@ const InnerPage = ({ posts, nextPage, prevPage, page }) => {
       <Header />
 
       <Main>
-        {data.map((post) => (
+        {posts.map((post) => (
           <Link href={"/posts/" + post.id} key={post.id}>
             <Article>
               <ListTitle>{post.title.rendered}</ListTitle>
