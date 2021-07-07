@@ -27,6 +27,7 @@ export const getStaticProps = async (context) => {
   const res = await fetch(
     "http://34.87.36.219/wp-json/wp/v2/posts?page=" + page
   );
+
   const totalNumberOfItems = res.headers.get("x-wp-total");
   const totalNumberOfPages = Math.ceil(totalNumberOfItems / 10).toString();
 
@@ -34,38 +35,37 @@ export const getStaticProps = async (context) => {
     page !== totalNumberOfPages ? (parseInt(page) + 1).toString() : -1;
   let prevPage = page !== 1 ? page - 1 : -1;
 
-  let posts = [];
   try {
-    posts = await res.json();
-  } catch (err) {
-    console.log("TEST");
-  }
-  let image = "";
-  let dateString = "";
+    let posts = await res.json();
+    let image = "";
+    let dateString = "";
 
-  console.log(res);
+    console.log(res);
 
-  posts = await Promise.all(
-    posts.map(async (post, i) => {
-      dateString = post.date;
-      dateString = new Date(dateString).toGMTString();
-      dateString = dateString.split(" ").slice(0, 4).join(" ");
+    posts = await Promise.all(
+      posts.map(async (post, i) => {
+        dateString = post.date;
+        dateString = new Date(dateString).toGMTString();
+        dateString = dateString.split(" ").slice(0, 4).join(" ");
 
-      if (
-        post["_links"]["wp:featuredmedia"] &&
-        post["_links"]["wp:featuredmedia"].length > 0
-      ) {
-        const imageApi = post["_links"]["wp:featuredmedia"][0].href;
-        const res = await fetch(imageApi);
-        const data = await res.json();
+        if (
+          post["_links"]["wp:featuredmedia"] &&
+          post["_links"]["wp:featuredmedia"].length > 0
+        ) {
+          const imageApi = post["_links"]["wp:featuredmedia"][0].href;
+          const res = await fetch(imageApi);
+          const data = await res.json();
 
-        if (data.guid && data.guid.rendered) {
-          image = data.guid.rendered;
+          if (data.guid && data.guid.rendered) {
+            image = data.guid.rendered;
+          }
         }
-      }
-      return { ...post, image, dateString };
-    })
-  );
+        return { ...post, image, dateString };
+      })
+    );
+  } catch (err) {
+    console.log(err);
+  }
 
   return {
     props: { posts, nextPage, prevPage, page },
