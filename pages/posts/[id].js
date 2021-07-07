@@ -9,19 +9,26 @@ import {
   ArticleTitle,
 } from "../../styles/styles";
 
-export const getStaticPaths = async () => {
-  const res = await fetch("http://34.87.36.219/wp-json/wp/v2/posts");
-  const data = await res.json();
+// export const getStaticPaths = async () => {
+//   const res = await fetch("http://34.87.36.219/wp-json/wp/v2/posts");
+//   const data = await res.json();
 
-  const paths = data.map((post) => {
-    return {
-      params: {
-        id: post.id.toString(),
-      },
-    };
-  });
+//   const paths = data.map((post) => {
+//     return {
+//       params: {
+//         id: post.id.toString(),
+//       },
+//     };
+//   });
+//   return {
+//     paths,
+//     fallback: "blocking",
+//   };
+// };
+
+export const getStaticPaths = async () => {
   return {
-    paths,
+    paths: [],
     fallback: "blocking",
   };
 };
