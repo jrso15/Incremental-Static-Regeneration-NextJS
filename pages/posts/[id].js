@@ -38,20 +38,24 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const id = context.params.id;
 
-  let res;
+  let data;
   try {
-    res = await fetch("http://34.87.36.219/wp-json/wp/v2/posts/" + id);
-  } catch {
-    console.log(`Unable to fetch page api: ${err}`);
-
+    const res = await fetch("http://34.87.36.219/wp-json/wp/v2/posts/" + id);
+    data = await res.json();
+  } catch (err) {
+    console.log(`Unable to fetch post api: ${err}`);
     return {
-      props: {},
-      revalidate: 10,
+      props: {
+        post: {
+          id: "",
+          title: "",
+          date: "",
+          image: "",
+          content: "",
+        },
+      },
     };
   }
-  const data = await res.json();
-
-  console.log(data);
 
   let image = "";
   let dateString = "";
