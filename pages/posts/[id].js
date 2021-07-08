@@ -77,7 +77,7 @@ export const getStaticProps = async (context) => {
 const InnerArticle = ({ post }) => {
   console.log(post);
 
-  const [clientData, setClientData] = useState(null);
+  const [clientData, setClientData] = useState([]);
   const { isFallback } = useRouter();
 
   useEffect(() => {
@@ -95,20 +95,21 @@ const InnerArticle = ({ post }) => {
       <Container>
         <Header />
 
-        <MainInner>
-          <ArticleTitle>{clientData.title}</ArticleTitle>
-          {clientData.image.length > 0 && (
-            <ImageContainer>
-              <ImageThumbnail
-                src={clientData.image}
-                alt={clientData.title.rendered}
-                layout="fill"
-              />
-            </ImageContainer>
-          )}
-          {ReactHtmlParser(clientData.content)}
-        </MainInner>
-
+        {clientData.map((post, i) => (
+          <MainInner key={i}>
+            <ArticleTitle>{post.title}</ArticleTitle>
+            {post.image.length > 0 && (
+              <ImageContainer>
+                <ImageThumbnail
+                  src={post.image}
+                  alt={clientData.title.rendered}
+                  layout="fill"
+                />
+              </ImageContainer>
+            )}
+            {ReactHtmlParser(post.content)}
+          </MainInner>
+        ))}
         <Footer />
       </Container>
     );
