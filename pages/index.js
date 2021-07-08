@@ -16,7 +16,18 @@ import {
 } from "../styles/styles";
 
 export const getStaticProps = async () => {
-  const res = await fetch(`http://34.87.36.219/wp-json/wp/v2/posts`);
+  let res;
+  try {
+    res = await fetch("http://34.87.36.219/wp-json/wp/v2/posts");
+  } catch (err) {
+    console.log(`Unable to fetch page api: ${err}`);
+
+    return {
+      props: {},
+      revalidate: 10,
+    };
+  }
+
   const totalNumberOfItems = res.headers.get("x-wp-total");
 
   let nextPage = totalNumberOfItems && totalNumberOfItems > 10 ? 2 : 1;
@@ -35,12 +46,17 @@ export const getStaticProps = async () => {
         post["_links"]["wp:featuredmedia"] &&
         post["_links"]["wp:featuredmedia"].length > 0
       ) {
-        const imageApi = post["_links"]["wp:featuredmedia"][0].href;
-        const res = await fetch(imageApi);
-        const data = await res.json();
+        try {
+          const imageApi = post["_links"]["wp:featuredmedia"][0].href;
+          const res = await fetch(imageApi);
+          const data = await res.json();
 
-        if (data.guid && data.guid.rendered) {
-          image = data.guid.rendered;
+          if (data.guid && data.guid.rendered) {
+            image = data.guid.rendered;
+          }
+        } catch (err) {
+          console.log(`Unable to fetch image api: ${err}`);
+          image = "";
         }
       }
       return { ...post, image, dateString };
