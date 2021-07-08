@@ -1,7 +1,5 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Header from "../../components/HeaderLayout";
-import Footer from "../../components/FooterLayout";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
 import ReactHtmlParser from "react-html-parser";
 import {
   Container,
@@ -12,7 +10,7 @@ import {
 } from "../../styles/styles";
 
 // export const getStaticPaths = async () => {
-//   const res = await fetch("http://34.87.36.219/wp-json/wp/v2/posts");
+//   const res = await fetch("http://34.87.84.83/wp-json/wp/v2/posts");
 //   const data = await res.json();
 
 //   const paths = data.map((post) => {
@@ -31,16 +29,14 @@ import {
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: true,
+    fallback: "blocking",
   };
 };
 
 export const getStaticProps = async (context) => {
   const id = context.params.id;
-  const res = await fetch("http://34.87.36.219/wp-json/wp/v2/posts/" + id);
+  const res = await fetch("http://34.87.84.83/wp-json/wp/v2/posts/" + id);
   const data = await res.json();
-
-  console.log(data);
 
   let image = "";
   let dateString = "";
@@ -64,7 +60,6 @@ export const getStaticProps = async (context) => {
   return {
     props: {
       post: {
-        id: id,
         title: data.title.rendered,
         date: dateString,
         image: image,
@@ -75,67 +70,27 @@ export const getStaticProps = async (context) => {
 };
 
 const InnerArticle = ({ post }) => {
-  console.log(post);
+  return (
+    <Container>
+      <Header />
 
-  const [clientData, setClientData] = useState([]);
-  const { isFallback } = useRouter();
+      <MainInner>
+        <ArticleTitle>{post.title}</ArticleTitle>
+        {post.image.length > 0 && (
+          <ImageContainer>
+            <ImageThumbnail
+              src={post.image}
+              alt={post.title.rendered}
+              layout="fill"
+            />
+          </ImageContainer>
+        )}
+        {ReactHtmlParser(post.content)}
+      </MainInner>
 
-  useEffect(() => {
-    if (isFallback && !clientData) {
-      fetch("http://34.87.36.219/wp-json/wp/v2/posts/" + post.id).then(
-        async (resp) => {
-          setClientData(await resp.json());
-        }
-      );
-    }
-  }, [clientData, isFallback]);
-
-  if (isFallback || !post) {
-    return (
-      <Container>
-        <Header />
-
-        {clientData.map((post, i) => (
-          <MainInner key={i}>
-            <ArticleTitle>{post.title}</ArticleTitle>
-            {post.image.length > 0 && (
-              <ImageContainer>
-                <ImageThumbnail
-                  src={post.image}
-                  alt={clientData.title.rendered}
-                  layout="fill"
-                />
-              </ImageContainer>
-            )}
-            {ReactHtmlParser(post.content)}
-          </MainInner>
-        ))}
-        <Footer />
-      </Container>
-    );
-  } else {
-    return (
-      <Container>
-        <Header />
-
-        <MainInner>
-          <ArticleTitle>{post.title}</ArticleTitle>
-          {post.image.length > 0 && (
-            <ImageContainer>
-              <ImageThumbnail
-                src={post.image}
-                alt={post.title.rendered}
-                layout="fill"
-              />
-            </ImageContainer>
-          )}
-          {ReactHtmlParser(post.content)}
-        </MainInner>
-
-        <Footer />
-      </Container>
-    );
-  }
+      <Footer />
+    </Container>
+  );
 };
 
 export default InnerArticle;
