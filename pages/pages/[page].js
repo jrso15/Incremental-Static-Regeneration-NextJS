@@ -46,7 +46,6 @@ export const getStaticProps = async (context) => {
 
   let posts = [];
   posts = await res.json();
-  console.log("TEST");
   let image = "";
   let dateString = "";
 
