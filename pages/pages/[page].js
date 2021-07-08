@@ -23,59 +23,64 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async (context) => {
+  const { page } = context.params;
+
+  let res;
   try {
-    const { page } = context.params;
-    const res = await fetch(
-      "http://34.87.36.219/wp-json/wp/v2/posts?page=" + page
-    );
-    const totalNumberOfItems = res.headers.get("x-wp-total");
-    const totalNumberOfPages = Math.ceil(totalNumberOfItems / 10).toString();
+    res = await fetch("http://34.87.36.219/wp-json/wp/v2/posts?page=" + page);
+  } catch (err) {
+    console.log(`Unable to fetch page api: ${err}`);
 
-    let nextPage =
-      page !== totalNumberOfPages ? (parseInt(page) + 1).toString() : -1;
-    let prevPage = page !== 1 ? page - 1 : -1;
+    return {
+      props: {},
+      revalidate: 10,
+    };
+  }
 
-    let posts = [];
-    posts = await res.json();
-    console.log("TEST");
-    let image = "";
-    let dateString = "";
+  const totalNumberOfItems = res.headers.get("x-wp-total");
+  const totalNumberOfPages = Math.ceil(totalNumberOfItems / 10).toString();
 
-    console.log(res);
+  let nextPage =
+    page !== totalNumberOfPages ? (parseInt(page) + 1).toString() : -1;
+  let prevPage = page !== 1 ? page - 1 : -1;
 
-    posts = await Promise.all(
-      posts.map(async (post, i) => {
-        dateString = post.date;
-        dateString = new Date(dateString).toGMTString();
-        dateString = dateString.split(" ").slice(0, 4).join(" ");
+  let posts = [];
+  posts = await res.json();
+  console.log("TEST");
+  let image = "";
+  let dateString = "";
 
-        if (
-          post["_links"]["wp:featuredmedia"] &&
-          post["_links"]["wp:featuredmedia"].length > 0
-        ) {
+  posts = await Promise.all(
+    posts.map(async (post, i) => {
+      dateString = post.date;
+      dateString = new Date(dateString).toGMTString();
+      dateString = dateString.split(" ").slice(0, 4).join(" ");
+
+      if (
+        post["_links"]["wp:featuredmedia"] &&
+        post["_links"]["wp:featuredmedia"].length > 0
+      ) {
+        try {
           const imageApi = post["_links"]["wp:featuredmedia"][0].href;
-          const res = await fetch(imageApi);
-          const data = await res.json();
+          const imageRes = await fetch(imageApi);
+          const data = await imageRes.json();
 
           if (data.guid && data.guid.rendered) {
             image = data.guid.rendered;
           }
+        } catch (err) {
+          console.log(`Unable to fetch image api: ${err}`);
+          image = "";
         }
-        return { ...post, image, dateString };
-      })
-    );
+      }
+      return { ...post, image, dateString };
+    })
+  );
 
-    return {
-      props: { posts, nextPage, prevPage, page },
-      revalidate: 10,
-    };
-  } catch (err) {
-    console.log("OK:", err);
-    return {
-      props: {},
-      revalidate: 1,
-    };
-  }
+  return {
+    props: { posts, nextPage, prevPage, page },
+    revalidate: 10,
+  };
 };
 
 const InnerPage = ({ posts, nextPage, prevPage, page }) => {
@@ -85,7 +90,6 @@ const InnerPage = ({ posts, nextPage, prevPage, page }) => {
   const { isFallback } = useRouter();
   useEffect(() => {
     if (isFallback && !clientData) {
-      // Get Data from API
       fetch("http://34.87.36.219/wp-json/wp/v2/posts?page=" + page).then(
         async (resp) => {
           setClientData(await resp.json());
