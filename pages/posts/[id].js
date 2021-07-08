@@ -1,5 +1,5 @@
-import Header from "../../components/header";
-import Footer from "../../components/footer";
+import Header from "../../components/HeaderLayout";
+import Footer from "../../components/FooterLayout";
 import ReactHtmlParser from "react-html-parser";
 import {
   Container,
