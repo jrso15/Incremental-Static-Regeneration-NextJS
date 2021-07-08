@@ -63,12 +63,17 @@ export const getStaticProps = async (context) => {
     data["_links"]["wp:featuredmedia"] &&
     data["_links"]["wp:featuredmedia"].length > 0
   ) {
-    const imageApi = data["_links"]["wp:featuredmedia"][0].href;
-    const res = await fetch(imageApi);
-    const imageData = await res.json();
+    try {
+      const imageApi = data["_links"]["wp:featuredmedia"][0].href;
+      const res = await fetch(imageApi);
+      const imageData = await res.json();
 
-    if (imageData.guid && imageData.guid.rendered) {
-      image = imageData.guid.rendered;
+      if (imageData.guid && imageData.guid.rendered) {
+        image = imageData.guid.rendered;
+      }
+    } catch (err) {
+      console.log(`Unable to fetch image api: ${err}`);
+      image = "";
     }
   }
 
