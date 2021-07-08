@@ -82,7 +82,6 @@ const InnerArticle = ({ post }) => {
 
   useEffect(() => {
     if (isFallback && !clientData) {
-      // Get Data from API
       fetch("http://34.87.36.219/wp-json/wp/v2/posts/" + post.id).then(
         async (resp) => {
           setClientData(await resp.json());
@@ -92,7 +91,27 @@ const InnerArticle = ({ post }) => {
   }, [clientData, isFallback]);
 
   if (isFallback || !post) {
-    return <MainInner post={clientData} />;
+    return (
+      <Container>
+        <Header />
+
+        <MainInner>
+          <ArticleTitle>{clientData.title}</ArticleTitle>
+          {clientData.image.length > 0 && (
+            <ImageContainer>
+              <ImageThumbnail
+                src={clientData.image}
+                alt={clientData.title.rendered}
+                layout="fill"
+              />
+            </ImageContainer>
+          )}
+          {ReactHtmlParser(clientData.content)}
+        </MainInner>
+
+        <Footer />
+      </Container>
+    );
   } else {
     return (
       <Container>
