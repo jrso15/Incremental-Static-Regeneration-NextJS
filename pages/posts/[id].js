@@ -76,27 +76,46 @@ export const getStaticProps = async (context) => {
 
 const InnerArticle = ({ post }) => {
   console.log(post);
-  return (
-    <Container>
-      <Header />
 
-      <MainInner>
-        <ArticleTitle>{post.title}</ArticleTitle>
-        {post.image.length > 0 && (
-          <ImageContainer>
-            <ImageThumbnail
-              src={post.image}
-              alt={post.title.rendered}
-              layout="fill"
-            />
-          </ImageContainer>
-        )}
-        {ReactHtmlParser(post.content)}
-      </MainInner>
+  const [clientData, setClientData] = useState(null);
+  const { isFallback } = useRouter();
 
-      <Footer />
-    </Container>
-  );
+  useEffect(() => {
+    if (isFallback && !clientData) {
+      // Get Data from API
+      fetch("http://34.87.36.219/wp-json/wp/v2/posts/" + post.id).then(
+        async (resp) => {
+          setClientData(await resp.json());
+        }
+      );
+    }
+  }, [clientData, isFallback]);
+
+  if (isFallback || !post) {
+    return <MainInner post={clientData} />;
+  } else {
+    return (
+      <Container>
+        <Header />
+
+        <MainInner>
+          <ArticleTitle>{post.title}</ArticleTitle>
+          {post.image.length > 0 && (
+            <ImageContainer>
+              <ImageThumbnail
+                src={post.image}
+                alt={post.title.rendered}
+                layout="fill"
+              />
+            </ImageContainer>
+          )}
+          {ReactHtmlParser(post.content)}
+        </MainInner>
+
+        <Footer />
+      </Container>
+    );
+  }
 };
 
 export default InnerArticle;
