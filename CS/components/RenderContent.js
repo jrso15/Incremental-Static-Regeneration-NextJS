@@ -18,15 +18,15 @@ const RenderContent = ({ post }) => {
       {/* {clientData.map((post, i) => ( */}
       <MainInner>
         <ArticleTitle>{post.title}</ArticleTitle>
-        {post.image.length > 0 && (
-          <ImageContainer>
-            <ImageThumbnail
-              src={post.image}
-              alt={clientData.title.rendered}
-              layout="fill"
-            />
-          </ImageContainer>
-        )}
+        {/* {post.image.length > 0 && ( */}
+        <ImageContainer>
+          <ImageThumbnail
+            src={post.image}
+            alt={clientData.title.rendered}
+            layout="fill"
+          />
+        </ImageContainer>
+        {/* )} */}
         {ReactHtmlParser(post.content)}
       </MainInner>
       {/* ))} */}
