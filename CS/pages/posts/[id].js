@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Header from "../../components/HeaderLayout";
 import Footer from "../../components/FooterLayout";
 import ReactHtmlParser from "react-html-parser";
+import RenderContent from "../../components/RenderContent";
 import {
   Container,
   MainInner,
@@ -10,23 +11,6 @@ import {
   ImageThumbnail,
   ArticleTitle,
 } from "../../styles/styles";
-
-// export const getStaticPaths = async () => {
-//   const res = await fetch("http://34.87.36.219/wp-json/wp/v2/posts");
-//   const data = await res.json();
-
-//   const paths = data.map((post) => {
-//     return {
-//       params: {
-//         id: post.id.toString(),
-//       },
-//     };
-//   });
-//   return {
-//     paths,
-//     fallback: "blocking",
-//   };
-// };
 
 export const getStaticPaths = async () => {
   return {
@@ -95,9 +79,8 @@ export const getStaticProps = async (context) => {
 };
 
 const InnerArticle = ({ post }) => {
-  console.log(post);
-
   const [clientData, setClientData] = useState([]);
+  console.log(post);
   const { isFallback } = useRouter();
 
   useEffect(() => {
@@ -111,50 +94,9 @@ const InnerArticle = ({ post }) => {
   }, [clientData, isFallback]);
 
   if (isFallback || !post) {
-    return (
-      <Container>
-        <Header />
-
-        {clientData.map((post, i) => (
-          <MainInner key={i}>
-            <ArticleTitle>{post.title}</ArticleTitle>
-            {post.image.length > 0 && (
-              <ImageContainer>
-                <ImageThumbnail
-                  src={post.image}
-                  alt={clientData.title.rendered}
-                  layout="fill"
-                />
-              </ImageContainer>
-            )}
-            {ReactHtmlParser(post.content)}
-          </MainInner>
-        ))}
-        <Footer />
-      </Container>
-    );
+    return <RenderContent post={clientData} />;
   } else {
-    return (
-      <Container>
-        <Header />
-
-        <MainInner>
-          <ArticleTitle>{post.title}</ArticleTitle>
-          {post.image.length > 0 && (
-            <ImageContainer>
-              <ImageThumbnail
-                src={post.image}
-                alt={post.title.rendered}
-                layout="fill"
-              />
-            </ImageContainer>
-          )}
-          {ReactHtmlParser(post.content)}
-        </MainInner>
-
-        <Footer />
-      </Container>
-    );
+    return <RenderContent post={post} />;
   }
 };
 

@@ -100,10 +100,6 @@ const Home = ({ posts, nextPage }) => {
           </Link>
         ))}
         <ButtonWrapper>
-          {/* {nextPage && nextPage !== 1 && (
-            <Link href={"/pages/" + nextPage}>PREV</Link>
-          )} */}
-
           {nextPage && nextPage > 1 && (
             <NextLink href={"/pages/" + nextPage}>NEXT</NextLink>
           )}
